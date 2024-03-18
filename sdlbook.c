@@ -523,14 +523,14 @@ static int change_scroll_h(int incr) {
 }
 
 #define HELP_TEXT \
-	"HELP SCREEN - TYPE ENTER TO EXIT\n" \
-	"UP, DOWN ARROW - SCROLL 32 PIX\n" \
-	"CTRL + UP, DOWN ARROW - SCROLL 96 PIX\n" \
-	"PAGE_UP/DOWN - SCROLL ONE PAGE\n" \
-	"KEYPAD +/- OR CTRL-WHEEL - ZOOM\n" \
-	"G - ENTER PAGE NUMBER\n" \
-	"Q - QUIT\n" \
-	"F1 - SHOW HELP SCREEN\n"
+	"  HELP SCREEN - type ENTER to exit\n\n" \
+	"UP, DOWN - scroll 32px\n" \
+	"CTRL+UP/DOWN - scroll 96px\n" \
+	"PAGE_UP/DOWN - scroll one page\n" \
+	"KEYPAD -/+ - zoom out/in\n" \
+	"G - jump to page number\n" \
+	"Q - quit\n" \
+	"F1 - show this message\n"
 
 static int get_return_count(const char* text) {
 	int count = 0;
@@ -545,16 +545,16 @@ static void draw_font_lines(const char* text, struct spritesheet *font,
 	unsigned yy = y;
 	do {
 		draw_font(p, font, x, yy, scale);
-		yy += 10*2;
+		yy += 8*2;
 	} while((p = strchr(p, '\n')), p++);
 }
 
 static void input_loop(const char* title, char *result, bool help_view) {
 	int ret_count = get_return_count(title);
 	if(!ret_count) ret_count = 1;
-	int desired_height = (ret_count+2) * 10 * 2;
+	int desired_height = (ret_count) * 8 * 2 + 10;
 	ezsdl_fill_rect(0,0, ezsdl_get_width(), MIN(desired_height, ezsdl_get_height()), RGB(0xff,0x00,0x00), 1);
-	draw_font_lines(title, &ss_font, 8, 8, 2);
+	draw_font_lines(title, &ss_font, 8, 8, 1);
 	ezsdl_update_region(0, 0, ezsdl_get_width(), MIN(desired_height, ezsdl_get_height()));
 	char* p = result;
 	*p = 0;
@@ -581,7 +581,7 @@ static void input_loop(const char* title, char *result, bool help_view) {
 					*p = 0;
 					drawit:
 						ezsdl_fill_rect(8, desired_height - 10*2, ezsdl_get_width() -8, MIN(desired_height, ezsdl_get_height()), RGB(0xff,0x00,0x00), 1);
-						draw_font(result, &ss_font, 8, desired_height - 10*2, 2);
+						draw_font(result, &ss_font, 8, desired_height - 8*2, 2);
 						ezsdl_update_region(0, 0, ezsdl_get_width(), MIN(desired_height, ezsdl_get_height()));
 						break;
 				}
