@@ -117,9 +117,15 @@ static void read_write_config(int doread) {
 		cfg_close(config);
 	}
 	if(doread) {
+		#ifdef MIYOO
+		if(!config_data.w) config_data.w = 320;
+		if(!config_data.h) config_data.h = 240;
+		if(!config_data.scale) config_data.scale = 80;
+		#else
 		if(!config_data.w) config_data.w = 640;
 		if(!config_data.h) config_data.h = 480;
 		if(!config_data.scale) config_data.scale = 100;
+		#endif
 	}
 }
 
@@ -656,6 +662,9 @@ static int open_pdf(const char *fn) {
 }
 
 int main(int argc, char **argv) {
+#ifdef MIYOO
+	setenv("SDL_NOMOUSE", "1", 1);
+#endif
 	if(argc != 2)
 		die("need djvu filename as argv[1]");
 

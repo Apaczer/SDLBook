@@ -1,6 +1,43 @@
 #ifndef INPUTMAP_H
 #define INPUTMAP_H
 
+#ifdef MIYOO
+#define INPUT_UP SDLK_UP
+#define INPUT_DOWN SDLK_DOWN
+#define INPUT_LEFT SDLK_LEFT
+#define INPUT_RIGHT SDLK_RIGHT
+#define INPUT_LMOD SDLK_PAGEUP
+#define INPUT_RMOD SDLK_PAGEDOWN
+#define INPUT_PGDOWN SDLK_BACKSPACE
+#define INPUT_PGUP SDLK_TAB
+#define INPUT_ZOOMIN SDLK_LSHIFT
+#define INPUT_ZOOMOUT SDLK_SPACE
+#define INPUT_PAGEN SDLK_LALT
+#define INPUT_CLEAR SDLK_LCTRL
+#define INPUT_CANCEL SDLK_LCTRL
+#define INPUT_CONFIRM SDLK_LALT
+#define INPUT_EXIT SDLK_RCTRL
+#define INPUT_QUIT SDLK_ESCAPE
+#define INPUT_HELP SDLK_RETURN
+
+#define STR_UP "UP"
+#define STR_DOWN "DOWN"
+#define STR_LEFT "LEFT"
+#define STR_RIGHT "RIGHT"
+#define STR_LMOD "L2"
+#define STR_RMOD "R2"
+#define STR_PGDOWN "R1"
+#define STR_PGUP "L1"
+#define STR_ZOOMIN "X"
+#define STR_ZOOMOUT "Y"
+#define STR_PAGEN "A"
+#define STR_CLEAR "B"
+#define STR_CANCEL "B"
+#define STR_CONFIRM "A"
+#define STR_EXIT "RESET"
+#define STR_QUIT "SELECT"
+#define STR_HELP "START"
+#else
 #define INPUT_UP SDLK_UP
 #define INPUT_DOWN SDLK_DOWN
 #define INPUT_LEFT SDLK_LEFT
@@ -36,5 +73,6 @@
 #define STR_EXIT "ESC"
 #define STR_QUIT "Q"
 #define STR_HELP "F1"
+#endif
 
 #endif
