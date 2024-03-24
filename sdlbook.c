@@ -117,9 +117,15 @@ static void read_write_config(int doread) {
 		cfg_close(config);
 	}
 	if(doread) {
+#ifdef MIYOO
+		if(!config_data.w) config_data.w = 320;
+		if(!config_data.h) config_data.h = 240;
+		if(!config_data.scale) config_data.scale = 80;
+#else
 		if(!config_data.w) config_data.w = 640;
 		if(!config_data.h) config_data.h = 480;
 		if(!config_data.scale) config_data.scale = 100;
+#endif
 	}
 }
 
@@ -550,14 +556,14 @@ static int change_scroll_h(int incr) {
 }
 
 #define HELP_TEXT \
-	"HELP SCREEN - HIT ANY KEY TO EXIT\n" \
-	STR_UP ", " STR_DOWN " - SCROLL 32 PIX\n" \
-	STR_LMOD "/" STR_RMOD " + " STR_UP "/" STR_DOWN " - SCROLL 96 PIX\n" \
-	STR_PGUP "/" STR_PGDOWN " - SCROLL ONE PAGE\n" \
-	STR_ZOOMIN "/" STR_ZOOMOUT " OR " STR_LMOD "/" STR_RMOD " + WHEEL - ZOOM\n" \
-	STR_PAGEN " - ENTER PAGE NUMBER\n" \
-	STR_QUIT "/" STR_EXIT " - QUIT\n" \
-	STR_HELP " - SHOW HELP SCREEN\n"
+	"             HELP SCREEN\n       (press any key to exit)\n" \
+	STR_UP ", " STR_DOWN " - scroll 32px\n" \
+	STR_LMOD "/" STR_RMOD " + " STR_UP "/" STR_DOWN " - scroll 96px\n" \
+	STR_PGUP "/" STR_PGDOWN " - scroll one page -/+\n" \
+	STR_ZOOMIN "/" STR_ZOOMOUT " - zoom in/out\n" \
+	STR_PAGEN " - jump to page number\n" \
+	STR_QUIT "/" STR_EXIT " - quit\n" \
+	STR_HELP " - show this message\n"
 
 static int get_return_count(const char* text) {
 	int count = 0;
@@ -584,9 +590,9 @@ static void input_loop(const char* title, char *result, enum input_flags flags)
 {
 	int ret_count = get_return_count(title);
 	if(!ret_count) ret_count = 1;
-	int desired_height = (ret_count+2) * 10 * 2;
+	int desired_height = (ret_count) * 10 * 2 + 10;
 	ezsdl_fill_rect(0,0, ezsdl_get_width(), MIN(desired_height, ezsdl_get_height()), RGB(0xff,0x00,0x00), 1);
-	draw_font_lines(title, &ss_font, 8, 8, 2);
+	draw_font_lines(title, &ss_font, 8, 8, 1);
 	ezsdl_update_region(0, 0, ezsdl_get_width(), MIN(desired_height, ezsdl_get_height()));
 	char* p = result;
 	*p = 0;
@@ -657,8 +663,8 @@ static void input_loop(const char* title, char *result, enum input_flags flags)
 					*p = 0;
 				}
 			drawit:
-				ezsdl_fill_rect(8, desired_height - 10*2, ezsdl_get_width() -8, MIN(desired_height, ezsdl_get_height()), RGB(0xff,0x00,0x00), 1);
-				draw_font(result, &ss_font, 8, desired_height - 10*2, 2);
+				ezsdl_fill_rect(8, desired_height - 11*2, ezsdl_get_width() -8, MIN(desired_height, ezsdl_get_height()), RGB(0xff,0x00,0x00), 1);
+				draw_font(result, &ss_font, 8, desired_height - 11*2, 2);
 				ezsdl_update_region(0, 0, ezsdl_get_width(), MIN(desired_height, ezsdl_get_height()));
 				break;
 			}
@@ -770,7 +776,11 @@ int main(int argc, char **argv) {
 
 	init_gfx();
 
+#ifdef MIYOO
+	SDL_ShowCursor(0);
+#else
 	SDL_ShowCursor(1);
+#endif
 #ifndef USE_SDL2
 	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 #endif
