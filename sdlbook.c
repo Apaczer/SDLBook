@@ -61,7 +61,7 @@ static unsigned *image_data;
 static void update_title(void) {
 	char buf[64];
 	snprintf(buf, sizeof buf, "SDLBook [%d/%d] (%d%%) %s",
-			curr_page, page_count, config_data.scale, filename);
+			curr_page, page_count-1, config_data.scale, filename);
 	ezsdl_set_title(buf);
 }
 
@@ -918,7 +918,9 @@ int main(int argc, char **argv) {
 							{
 								char buf[32];
 								buf[0] = 0;
-								input_loop("Enter page No.: (use number/arrow keys)", buf, INPUT_LOOP_NUMERIC);
+								char page_number[100];
+								sprintf(page_number, "Enter page %i/%i: (use number/arrows)", curr_page, page_count-1);
+								input_loop(page_number, buf, INPUT_LOOP_NUMERIC);
 								if(*buf) need_redraw = set_page(atoi(buf));
 								else need_redraw = 1;
 							}
