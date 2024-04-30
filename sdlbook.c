@@ -537,7 +537,9 @@ static int change_page(int incr) {
 
 static int change_scale(int incr) {
 	int need_redraw;
-	if (config_data.scale + incr <= 999 && config_data.scale + incr > 0)
+	if (ezsdl_get_height() > get_page_bottom()*2)
+		config_data.scale += incr > 0 ? incr : 0;
+	else if (config_data.scale + incr <= 999 && config_data.scale + incr > 0)
 		config_data.scale += incr;
 	else return 0;
 	swap_image(prep_pages(&need_redraw));
